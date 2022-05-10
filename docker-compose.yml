@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  postgis:
+    container_name: postgis_container
+    # image: postgis/postgis
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      # - ./postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      # POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports: 
+      - 2432:5432
+    networks:
+      - default
+
+networks:
+  default:
+    external:
+      name: local_network
