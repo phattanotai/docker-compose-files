@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    networks: 
+      - default
+  
+  postgresql:
+    container_name: postgresql_container
+    image: postgres:9.6
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-kong}
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports: 
+      - 5432:5432
+    networks: 
+      - default
+
+
+networks:
+  default:
+    external:
+      name: local_network

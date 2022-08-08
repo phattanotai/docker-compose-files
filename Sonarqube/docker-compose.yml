@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+    sonar:
+        image: sonarqube:5.6.6-alpine
+        ports:
+            - "9001:9000"
+        environment:
+            - SONARQUBE_JDBC_URL=jdbc:mysql://mysql_container:3306/sonar?useUnicode=true&characterEncoding=utf8
+            - SONARQUBE_JDBC_USERNAME=admin
+            - SONARQUBE_JDBC_PASSWORD=1234
+
+networks:
+    default:
+        external:
+            name: local_network

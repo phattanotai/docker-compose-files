@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  # Database
+  mysql:
+    image: mysql:5.7
+    container_name: mysql_container
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+      - ./init.sql:/data/application/init.sql
+    restart: always
+    ports: 
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+  # phpmyadmin
+  phpmyadmin:
+    depends_on:
+      - mysql
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_container
+    restart: always
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} 
+
+networks:
+  default:
+    external:
+      name: local_network
+  

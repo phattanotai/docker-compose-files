@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  redis:
+    container_name: redis_container
+    image: redis
+    restart: always
+    networks:
+      - default
+    ports: 
+      - 6379:6379
+  redisInsight:
+    container_name: redisInsight_container
+    image: redislabs/redisinsight:latest
+    volumes:
+      - ./redisinsight:/db
+    restart: always
+    ports: 
+      - 8111:8001
+    networks:
+      - default
+
+networks:
+  default:
+    external:
+      name: local_network

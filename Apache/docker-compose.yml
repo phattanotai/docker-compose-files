@@ -1,0 +1,23 @@
+version: '3.3'
+services:
+  apache-server:
+    container_name: apache-server
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - ./config:/etc/apache2/sites-available
+      - ./app:/var/www/html/
+      # - ./app2:/var/www/html/app
+      # - ./php:/var/www/html/
+      - ./php.ini:/usr/local/etc/php/php.ini
+    ports:
+      - 8088:80
+      # - 80:80
+      # - 443:443
+
+networks:
+  default:
+    external:
+      name: local_network
